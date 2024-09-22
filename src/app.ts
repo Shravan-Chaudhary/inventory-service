@@ -3,7 +3,7 @@ import express, { Application, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import path from "path";
 import ResponseMessage from "./constants/responseMessage";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { globalErrorHandler } from "./common/middlewares/globalErrorHandler";
 import { httpResponse, CreateHttpError, HttpStatus } from "./common";
 import { getApplicationHealth, getSystemHealth } from "./utils/quicker";
 
@@ -61,4 +61,3 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
 app.use(globalErrorHandler);
 
 export default app;
-
