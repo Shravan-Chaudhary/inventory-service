@@ -1,0 +1,6 @@
+server:
+    env: "development"
+    port: 5502
+    url: "http://localhost:5502"
+database:
+    url: "mongodb://root:root@localhost:27017/inventory-dev?authSource=admin&w=1"
