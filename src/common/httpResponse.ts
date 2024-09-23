@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { THttpResponse } from "../types";
-import Config from "../config";
+import config from "config";
 import { EApplicationEnvoirnment } from "../constants/application";
 
 const httpResponse = (
@@ -28,7 +28,7 @@ const httpResponse = (
     });
 
     // Remove IP if in production
-    if (Config.ENV === EApplicationEnvoirnment.PRODUCTION) {
+    if (config.get("server.env") === EApplicationEnvoirnment.PRODUCTION) {
         delete response.request.ip;
     }
 
@@ -36,4 +36,3 @@ const httpResponse = (
 };
 
 export default httpResponse;
-

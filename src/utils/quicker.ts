@@ -1,5 +1,5 @@
 import os from "os";
-import Config from "../config";
+import config from "config";
 
 export const getSystemHealth = () => {
     return {
@@ -11,7 +11,7 @@ export const getSystemHealth = () => {
 
 export const getApplicationHealth = () => {
     return {
-        environment: Config.ENV,
+        environment: config.get("server.env"),
         upTime: `${process.uptime().toFixed(2)} Seconds`,
         memoryUsage: {
             heapTotal: `${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed()} MB`,
