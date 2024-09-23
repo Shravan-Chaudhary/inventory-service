@@ -1,11 +1,12 @@
 import cors from "cors";
+import config from "config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import path from "path";
-import ResponseMessage from "./constants/responseMessage";
+import ResponseMessage from "./common/constants/responseMessage";
 import { globalErrorHandler } from "./common/middlewares/globalErrorHandler";
-import { httpResponse, CreateHttpError, HttpStatus } from "./common";
-import { getApplicationHealth, getSystemHealth } from "./utils/quicker";
+import { httpResponse, CreateHttpError, HttpStatus } from "./common/http";
+import { getApplicationHealth, getSystemHealth } from "./common/utils/quicker";
 
 const app: Application = express();
 
@@ -23,7 +24,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 app.get("/", (req: Request, res: Response, _next: NextFunction) => {
     httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, {
-        user_id: 2
+        port: config.get("server.port")
     });
 });
 

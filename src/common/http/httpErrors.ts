@@ -54,4 +54,3 @@ const CreateHttpError = {
 };
 
 export default CreateHttpError;
-

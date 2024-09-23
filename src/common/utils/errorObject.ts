@@ -1,8 +1,8 @@
 import { Request } from "express";
 import { HttpError } from "http-errors";
-import { THttpError } from "../types";
 import config from "config";
 import { EApplicationEnvoirnment } from "../constants/application";
+import { THttpError } from "../http/httpTypes";
 
 const createErrorObject = (err: HttpError, req: Request): THttpError => {
     const errorObject: THttpError = {
