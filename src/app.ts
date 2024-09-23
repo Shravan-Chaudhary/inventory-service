@@ -22,31 +22,22 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
-app.get("/", (req: Request, res: Response, _next: NextFunction) => {
+app.get("/", (req: Request, res: Response) => {
     httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, {
         port: config.get("server.port")
     });
 });
 
 // Health check
-app.get(
-    "/api/v1/health",
-    (req: Request, res: Response, _next: NextFunction) => {
-        const healthData = {
-            application: getApplicationHealth(),
-            system: getSystemHealth(),
-            timeStamp: Date.now()
-        };
+app.get("/api/v1/health", (req: Request, res: Response) => {
+    const healthData = {
+        application: getApplicationHealth(),
+        system: getSystemHealth(),
+        timeStamp: Date.now()
+    };
 
-        httpResponse(
-            req,
-            res,
-            HttpStatus.OK,
-            ResponseMessage.SUCCESS,
-            healthData
-        );
-    }
-);
+    httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, healthData);
+});
 
 // 404 handler
 app.use((_req: Request, _res: Response, next: NextFunction) => {
