@@ -1,13 +1,23 @@
+export enum EPricetype {
+    BASE = "base",
+    ADDITIONAL = "additional"
+}
+
+export enum EWidgetType {
+    SWITCH = "switch",
+    RADIO = "radio"
+}
+
 export interface IAttributes {
     name: string;
-    widgetType: "switch" | "radio";
+    widgetType: EWidgetType.SWITCH | EWidgetType.RADIO;
     defaultValue: string;
     availableOptions: string[];
 }
 
 export interface IPriceConfiguration {
     [key: string]: {
-        priceType: "base" | "additional";
+        priceType: EPricetype.BASE | EPricetype.ADDITIONAL;
         availableOptions: string[];
     };
 }
