@@ -12,18 +12,24 @@ export default [
 
     body("priceConfiguration")
         .exists()
-        .withMessage("price configuration is required"),
+        .withMessage("price configuration is required")
+        .notEmpty()
+        .withMessage("price configuration cannot be empty"),
     body("priceConfiguration.*.priceType")
         .exists()
         .withMessage("price type is required")
         .custom((value: EPricetype.BASE | EPricetype.ADDITIONAL) => {
             const validKeys = [EPricetype.BASE, EPricetype.ADDITIONAL];
             if (!validKeys.includes(value)) {
-                return new Error(
-                    `Price type must be either: [${validKeys.join(", ")}]`
-                );
+                throw new Error(`price type must be either: ${validKeys.join(", ")}`);
             }
             return true;
-        }),
-    body("attributes").exists().withMessage("attributes are required")
+        })
+        .notEmpty()
+        .withMessage("price type cannot be empty"),
+    body("attributes")
+        .exists()
+        .withMessage("attributes are required")
+        .notEmpty()
+        .withMessage("attributes cannot be empty")
 ];
