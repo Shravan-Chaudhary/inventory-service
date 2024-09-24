@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
-import {
-    IAttributes,
-    ICategory,
-    IPriceConfiguration,
-    EPricetype,
-    EWidgetType
-} from "./types";
+import { IAttributes, ICategory, IPriceConfiguration, EPricetype, EWidgetType } from "./types";
 
 const attributeSchema = new mongoose.Schema<IAttributes>({
     name: {
@@ -55,5 +49,4 @@ const categorySchema = new mongoose.Schema<ICategory>({
     }
 });
 
-const Category = mongoose.model<ICategory>("Category", categorySchema);
-export default Category;
+export default mongoose.model<ICategory>("Category", categorySchema);

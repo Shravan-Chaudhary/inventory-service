@@ -1,21 +1,15 @@
-import express, {
-    Request,
-    Response,
-    NextFunction,
-    RequestHandler
-} from "express";
+import express, { Request, Response, NextFunction, RequestHandler } from "express";
 import { CategoryController } from "./category-controller";
 import categoryValidator from "./category-validator";
+import { CategoryService } from "./category-service";
+import logger from "../../config/logger";
 
 const router = express.Router();
 
-const categoryController = new CategoryController();
+const categoryService = new CategoryService();
+const categoryController = new CategoryController(categoryService, logger);
 
-router.post("/", categoryValidator, (async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+router.post("/", categoryValidator, (async (req: Request, res: Response, next: NextFunction) => {
     await categoryController.create(req, res, next);
 }) as unknown as RequestHandler);
 
