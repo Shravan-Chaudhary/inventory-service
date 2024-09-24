@@ -4,7 +4,7 @@
     "semi": true,
     "singleQuote": false,
     "bracketSameLine": true,
-    "printWidth": 80,
+    "printWidth": 120,
     "singleAttributePerLine": true,
     "endOfLine": "crlf"
 }

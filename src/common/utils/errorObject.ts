@@ -19,7 +19,6 @@ const createErrorObject = (err: HttpError, req: Request): THttpError => {
         trace: { stack: err.stack }
     };
 
-    // TODO: Log error
     logger.error("Controller_error", {
         meta: errorObject
     });
