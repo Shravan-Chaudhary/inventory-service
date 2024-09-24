@@ -31,6 +31,9 @@ export class CategoryController {
             attributes
         });
 
-        httpResponse(req, res, HttpStatus.CREATED, ResponseMessage.CREATED, category);
+        httpResponse(req, res, HttpStatus.CREATED, ResponseMessage.CREATED, {
+            id: category?._id,
+            name: category?.name
+        });
     }
 }
