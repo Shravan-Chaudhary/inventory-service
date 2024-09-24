@@ -7,6 +7,7 @@ import ResponseMessage from "./common/constants/responseMessage";
 import { globalErrorHandler } from "./common/middlewares/globalErrorHandler";
 import { httpResponse, CreateHttpError, HttpStatus } from "./common/http";
 import { getApplicationHealth, getSystemHealth } from "./common/utils/quicker";
+import categoryRouter from "./modules/categories/category-router";
 
 const app: Application = express();
 
@@ -27,6 +28,8 @@ app.get("/", (req: Request, res: Response) => {
         port: config.get("server.port")
     });
 });
+
+app.use("/api/v1/categories", categoryRouter);
 
 // Health check
 app.get("/api/v1/health", (req: Request, res: Response) => {
