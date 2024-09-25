@@ -1,5 +1,4 @@
 // @ts-check
-
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -36,5 +35,6 @@ export default tseslint.config({
                 ignoreRestSiblings: true
             }
         ]
-    }
+    },
+    ignores: ["node_modules", "dist", "**/*.spec.ts", "tests"]
 });
