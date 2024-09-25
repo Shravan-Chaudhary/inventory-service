@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import config from "config";
+import Config from ".";
 
 const initDb = async () => {
-    await mongoose.connect(config.get("database.url"));
+    await mongoose.connect(Config.DATABASE_URL!);
     return mongoose.connection;
 };
 

@@ -1,5 +1,4 @@
 import cors from "cors";
-import config from "config";
 import express, { Application, NextFunction, Request, Response } from "express";
 import helmet from "helmet";
 import path from "path";
@@ -8,6 +7,7 @@ import { globalErrorHandler } from "./common/middlewares/globalErrorHandler";
 import { httpResponse, CreateHttpError, HttpStatus } from "./common/http";
 import { getApplicationHealth, getSystemHealth } from "./common/utils/quicker";
 import categoryRouter from "./modules/categories/category-router";
+import Config from "./config";
 
 const app: Application = express();
 
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 app.get("/", (req: Request, res: Response) => {
     httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, {
-        port: config.get("server.port")
+        port: Config.PORT
     });
 });
 

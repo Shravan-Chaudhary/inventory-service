@@ -1,9 +1,9 @@
 import { Request } from "express";
 import { HttpError } from "http-errors";
-import config from "config";
 import { EApplicationEnvoirnment } from "../constants/application";
 import { THttpError } from "../http/httpTypes";
 import logger from "../../config/logger";
+import Config from "../../config";
 
 const createErrorObject = (err: HttpError, req: Request): THttpError => {
     const errorObject: THttpError = {
@@ -24,7 +24,7 @@ const createErrorObject = (err: HttpError, req: Request): THttpError => {
     });
 
     // Remove IP,Trace if in production
-    if (config.get("server.env") === EApplicationEnvoirnment.PRODUCTION) {
+    if (Config.ENV === EApplicationEnvoirnment.PRODUCTION) {
         delete errorObject.request.ip;
         delete errorObject.trace;
     }

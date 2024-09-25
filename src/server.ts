@@ -1,10 +1,10 @@
 import app from "./app";
-import config from "config";
+import Config from "./config";
 import initDb from "./config/db";
 import logger from "./config/logger";
 
 const startServer = async () => {
-    const PORT = config.get("server.port") ?? 5502;
+    const PORT = Config.PORT ?? 5502;
 
     try {
         // Initialize database
@@ -20,7 +20,7 @@ const startServer = async () => {
             logger.info("APPLICATION_STARTED", {
                 meta: {
                     PORT: PORT,
-                    SERVER_URL: config.get("server.url")
+                    SERVER_URL: Config.SERVER_URL
                 }
             });
         });
