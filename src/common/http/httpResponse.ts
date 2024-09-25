@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import config from "config";
 import { EApplicationEnvoirnment } from "../constants/application";
 import { THttpResponse } from "./httpTypes";
 import logger from "../../config/logger";
+import Config from "../../config";
 
 const httpResponse = (
     req: Request,
@@ -28,7 +28,7 @@ const httpResponse = (
     });
 
     // Remove IP if in production
-    if (config.get("server.env") === EApplicationEnvoirnment.PRODUCTION) {
+    if (Config.ENV === EApplicationEnvoirnment.PRODUCTION) {
         delete response.request.ip;
     }
 
