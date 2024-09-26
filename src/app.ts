@@ -9,6 +9,7 @@ import { getApplicationHealth, getSystemHealth } from "./common/utils/quicker";
 import categoryRouter from "./modules/categories/category-router";
 import Config from "./config";
 import cookieParser from "cookie-parser";
+import productRouter from "./modules/products/product-router";
 
 const app: Application = express();
 
@@ -31,7 +32,8 @@ app.get("/", (req: Request, res: Response) => {
     });
 });
 
-app.use("/api/v1/categories", categoryRouter);
+app.use(`${Config.BASE_URL}/categories`, categoryRouter);
+app.use(`${Config.BASE_URL}/products`, productRouter);
 
 // Health check
 app.get("/api/v1/health", (req: Request, res: Response) => {

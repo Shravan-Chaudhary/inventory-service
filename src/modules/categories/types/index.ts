@@ -1,7 +1,4 @@
-export enum EPricetype {
-    BASE = "base",
-    ADDITIONAL = "additional"
-}
+import { EPricetype } from "../../../constants";
 
 export enum EWidgetType {
     SWITCH = "switch",
