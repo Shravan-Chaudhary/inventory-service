@@ -8,6 +8,7 @@ import { httpResponse, CreateHttpError, HttpStatus } from "./common/http";
 import { getApplicationHealth, getSystemHealth } from "./common/utils/quicker";
 import categoryRouter from "./modules/categories/category-router";
 import Config from "./config";
+import cookieParser from "cookie-parser";
 
 const app: Application = express();
 
@@ -20,6 +21,7 @@ app.use(
     })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Routes
