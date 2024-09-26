@@ -13,15 +13,11 @@ export default [
         .withMessage("description cannot be empty")
         .isString()
         .withMessage("description must be a string"),
-    body("image").custom((_value, { req }) => {
-        if (!req.files) throw new Error(`product image is required`);
-        return true;
-    }),
-    body("priceConfiguration")
-        .notEmpty()
-        .withMessage("priceconfiguration cannot be empty")
-        .isString()
-        .withMessage("priceconfiguration must be a string"),
+    // body("image").custom((_value, { req }) => {
+    //     if (!req.files) throw new Error(`product image is required`);
+    //     return true;
+    // }),
+    body("priceConfiguration").notEmpty().withMessage("priceconfiguration cannot be empty"),
     body("attributes")
         .exists()
         .withMessage("attributes are required")

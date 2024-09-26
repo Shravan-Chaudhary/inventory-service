@@ -1,6 +1,8 @@
+import ProductModel from "./product-model";
+import { IProduct } from "./types";
+
 export class ProductService {
-    async create(_productData: unknown) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        return "product created";
+    async create(productData: IProduct) {
+        return await ProductModel.create(productData);
     }
 }
