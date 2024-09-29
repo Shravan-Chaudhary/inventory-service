@@ -34,10 +34,10 @@ export class S3StorageService implements IStorageService {
             }
         }
     }
-    delete(_fileName: string): void {
+    public delete(_fileName: string): void {
         throw new Error("Method not implemented.");
     }
-    getObjectUrl(_fileName: string): string {
+    public getObjectUrl(_fileName: string): string {
         throw new Error("Method not implemented.");
     }
 }

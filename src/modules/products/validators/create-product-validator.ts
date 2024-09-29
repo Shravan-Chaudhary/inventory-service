@@ -1,18 +1,8 @@
 import { body } from "express-validator";
 
 export default [
-    body("name")
-        .exists()
-        .withMessage("product name is required")
-        .isString()
-        .withMessage("product name must be a string")
-        .notEmpty()
-        .withMessage("product name cannot be empty"),
-    body("description")
-        .notEmpty()
-        .withMessage("description cannot be empty")
-        .isString()
-        .withMessage("description must be a string"),
+    body("name").notEmpty().withMessage("product name cannot be empty"),
+    body("description").notEmpty().withMessage("description cannot be empty"),
     body("image").custom((_value, { req }) => {
         if (!req.files) throw new Error(`product image is required`);
         return true;
