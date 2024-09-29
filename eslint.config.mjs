@@ -22,6 +22,7 @@ export default tseslint.config({
         "no-console": "error",
         "no-useless-catch": 0,
         "@typescript-eslint/no-misused-promises": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         quotes: ["error", "double", { allowTemplateLiterals: true }],
         "@typescript-eslint/no-unused-vars": [
             "error",
