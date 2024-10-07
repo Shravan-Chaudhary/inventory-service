@@ -9,7 +9,7 @@ const httpResponse = (
     res: Response,
     responseStatusCode: number,
     responseMessage: string,
-    data: unknown = null
+    data: unknown
 ): void => {
     const response: THttpResponse = {
         success: true,
