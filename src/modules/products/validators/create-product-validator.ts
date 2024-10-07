@@ -1,22 +1,35 @@
-import { body } from "express-validator";
+import { checkSchema } from "express-validator";
 
-export default [
-    body("name").notEmpty().withMessage("product name cannot be empty"),
-    body("description").notEmpty().withMessage("description cannot be empty"),
-    body("image").custom((_value, { req }) => {
-        if (!req.files) throw new Error(`product image is required`);
-        return true;
-    }),
-    body("priceConfiguration").notEmpty().withMessage("priceconfiguration cannot be empty"),
-    body("attributes")
-        .exists()
-        .withMessage("attributes are required")
-        .notEmpty()
-        .withMessage("attributes cannot be empty"),
-    body("tenantId")
-        .notEmpty()
-        .withMessage("tenant id cannot be empty")
-        .isString()
-        .withMessage("tenant id must be a string"),
-    body("categoryId").notEmpty().withMessage("category id cannot be empty")
-];
+export const createProductValidator = checkSchema({
+    name: {
+        notEmpty: true,
+        errorMessage: "Name is required and must be a string"
+    },
+    description: {
+        isString: true,
+        notEmpty: true,
+        errorMessage: "Description is required and must be a string"
+    },
+    priceConfiguration: {
+        isObject: true,
+        errorMessage: "Price configuration must be an object if provided"
+    },
+    attributes: {
+        isArray: true,
+        errorMessage: "Attributes must be an array if provided"
+    },
+    tenantId: {
+        isString: true,
+        notEmpty: true,
+        errorMessage: "Tenant ID is required and must be a string"
+    },
+    categoryId: {
+        isMongoId: true,
+        errorMessage: "Category ID must be a valid MongoDB ObjectId if provided"
+    },
+    isPublished: {
+        optional: true,
+        isBoolean: true,
+        errorMessage: "isPublished must be a boolean if provided"
+    }
+});

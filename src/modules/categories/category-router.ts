@@ -12,6 +12,8 @@ const router = express.Router();
 const categoryService = new CategoryService();
 const categoryController = new CategoryController(categoryService, logger);
 
+//TODO: Implement crud operations for categories
+
 router.post(
     "/",
     authenticate,
