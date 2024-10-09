@@ -1,7 +1,7 @@
 import { CreateHttpError } from "../../common/http";
 import logger from "../../config/logger";
 import ProductModel from "./product-model";
-import { IProduct } from "./types";
+import { IFilters, IProduct } from "./types";
 
 export class ProductService {
     public async create(productData: IProduct) {
@@ -32,5 +32,44 @@ export class ProductService {
             throw err;
         }
         return product.image;
+    }
+
+    public async getProducts(q: string, filters: IFilters) {
+        const searchQueryRegExp = new RegExp(q, "i");
+
+        const matchQuery = {
+            ...filters,
+            name: searchQueryRegExp
+        };
+
+        const aggregate = ProductModel.aggregate([
+            {
+                $match: matchQuery
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "categoryId",
+                    foreignField: "_id",
+                    as: "category",
+                    pipeline: [
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                attributes: 1,
+                                priceConfiguration: 1
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                $unwind: "$category"
+            }
+        ]);
+
+        const products = await aggregate.exec();
+        return products as IProduct[];
     }
 }

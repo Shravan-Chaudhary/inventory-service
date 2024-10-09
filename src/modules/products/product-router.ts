@@ -54,4 +54,11 @@ router.put(
     })
 );
 
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        await productController.index(req, res);
+    })
+);
+
 export default router;

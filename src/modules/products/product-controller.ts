@@ -4,10 +4,11 @@ import { ProductService } from "./product-service";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { CreateHttpError, httpResponse, HttpStatus } from "../../common/http";
-import { IProduct } from "./types";
+import { IFilters, IProduct } from "./types";
 import ResponseMessage from "../../common/constants/responseMessage";
 import { IStorageService } from "../../types/storage";
 import { UploadedFile } from "express-fileupload";
+import mongoose from "mongoose";
 
 //TODO: Check product access by tenant
 export class ProductController {
@@ -36,15 +37,18 @@ export class ProductController {
             fileData: image.data.buffer
         });
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
-            req.body as unknown as IProduct;
+            req.body as IProduct;
 
+        if (typeof attributes !== "string" || typeof priceConfiguration !== "string") {
+            throw new Error("attributes and priceConfiguration must be strings");
+        }
         const productData = {
             name,
             description,
-            attributes: JSON.parse(attributes as unknown as string),
+            attributes: JSON.parse(attributes as string),
             categoryId,
             image: imageName,
-            priceConfiguration: JSON.parse(priceConfiguration as unknown as string),
+            priceConfiguration: JSON.parse(priceConfiguration as string),
             tenantId,
             isPublished
         } as IProduct;
@@ -82,7 +86,11 @@ export class ProductController {
         }
 
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
-            req.body as unknown as IProduct;
+            req.body as IProduct;
+
+        if (typeof attributes !== "string" || typeof priceConfiguration !== "string") {
+            throw new Error("attributes and priceConfiguration must be strings");
+        }
 
         const productData = {
             name,
@@ -97,5 +105,29 @@ export class ProductController {
 
         const updatedProduct = await this.productService.update(productId, productData);
         httpResponse(req, res, HttpStatus.OK, ResponseMessage.UPDATED, { id: updatedProduct?._id });
+    }
+
+    public async index(req: Request, res: Response) {
+        this.logger.info("CONTROLLER_REQUEST", {
+            meta: req.body as unknown
+        });
+
+        const { q, tenantId, categoryId, isPublished } = req.query;
+
+        const filters: IFilters = {};
+
+        if (isPublished == "true") filters.isPublished = true;
+
+        if (tenantId) {
+            filters.tenantId = tenantId as string;
+        }
+
+        if (categoryId && mongoose.Types.ObjectId.isValid(categoryId as string)) {
+            filters.categoryId = new mongoose.Types.ObjectId(categoryId as string);
+        }
+
+        const products = await this.productService.getProducts(q as string, filters);
+
+        httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, products);
     }
 }
