@@ -39,9 +39,6 @@ export class ProductController {
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
             req.body as IProduct;
 
-        if (typeof attributes !== "string" || typeof priceConfiguration !== "string") {
-            throw new Error("attributes and priceConfiguration must be strings");
-        }
         const productData = {
             name,
             description,
@@ -87,10 +84,6 @@ export class ProductController {
 
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
             req.body as IProduct;
-
-        if (typeof attributes !== "string" || typeof priceConfiguration !== "string") {
-            throw new Error("attributes and priceConfiguration must be strings");
-        }
 
         const productData = {
             name,
