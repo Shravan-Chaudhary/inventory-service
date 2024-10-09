@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { EPricetype } from "../../../constants";
 
 export interface IPriceConfiguration {
@@ -15,5 +16,11 @@ export interface IProduct {
     attributes: string;
     tenantId: string;
     categoryId: string;
+    isPublished?: boolean;
+}
+
+export interface IFilters {
+    tenantId?: string;
+    categoryId?: mongoose.Types.ObjectId;
     isPublished?: boolean;
 }
