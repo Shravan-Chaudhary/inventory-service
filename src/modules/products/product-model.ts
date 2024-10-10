@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { AggregatePaginateModel } from "mongoose";
 import { EPricetype } from "../../constants";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
+import { IProduct } from "./types";
 
 const attributeSchema = new mongoose.Schema({
     name: {
@@ -60,5 +61,5 @@ const productSchema = new mongoose.Schema(
 
 productSchema.plugin(mongooseAggregatePaginate);
 
-const ProductModel = mongoose.model("Product", productSchema);
+const ProductModel = mongoose.model<IProduct, AggregatePaginateModel<IProduct>>("Product", productSchema);
 export default ProductModel;

@@ -131,6 +131,20 @@ export class ProductController {
 
         const products = await this.productService.getProducts(q as string, filters, paginateQueries);
 
-        httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, products);
+        const finalProducts = (products.docs as IProduct[]).map((product: IProduct) => {
+            return {
+                ...product,
+                image: this.storageService.getObjectUrl(product.image)
+            };
+        });
+
+        const result = {
+            docs: finalProducts,
+            totaldocs: products.totalDocs,
+            pageSize: products.limit,
+            curentPage: products.page
+        };
+
+        httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, result);
     }
 }

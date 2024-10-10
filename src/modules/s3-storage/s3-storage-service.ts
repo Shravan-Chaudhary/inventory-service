@@ -50,7 +50,8 @@ export class S3StorageService implements IStorageService {
             }
         }
     }
-    public getObjectUrl(_fileName: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    public getObjectUrl(imageName: string): string {
+        const url = `https://${Config.S3_BUCKET_NAME}.s3.${Config.S3_REGION}.amazonaws.com/${imageName}`;
+        return url;
     }
 }
