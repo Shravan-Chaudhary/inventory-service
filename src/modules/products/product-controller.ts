@@ -4,7 +4,7 @@ import { ProductService } from "./product-service";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { CreateHttpError, httpResponse, HttpStatus } from "../../common/http";
-import { IFilters, IProduct } from "./types";
+import { IAttributes, IFilters, IPriceConfiguration, IProduct, IProductRequest } from "./types";
 import ResponseMessage from "../../common/constants/responseMessage";
 import { IStorageService } from "../../types/storage";
 import { UploadedFile } from "express-fileupload";
@@ -37,15 +37,18 @@ export class ProductController {
             fileData: image.data.buffer
         });
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
-            req.body as IProduct;
+            req.body as IProductRequest;
+
+        const parsedAttributes = JSON.parse(attributes) as IAttributes;
+        const parsedPriceConfiguration = JSON.parse(priceConfiguration) as IPriceConfiguration;
 
         const productData = {
             name,
             description,
-            attributes: JSON.parse(attributes as string),
+            attributes: parsedAttributes,
             categoryId,
             image: imageName,
-            priceConfiguration: JSON.parse(priceConfiguration as string),
+            priceConfiguration: parsedPriceConfiguration,
             tenantId,
             isPublished
         } as IProduct;
@@ -83,15 +86,18 @@ export class ProductController {
         }
 
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
-            req.body as IProduct;
+            req.body as IProductRequest;
+
+        const parsedAttributes = JSON.parse(attributes) as IAttributes;
+        const parsedPriceConfiguration = JSON.parse(priceConfiguration) as IPriceConfiguration;
 
         const productData = {
             name,
             description,
-            attributes: JSON.parse(attributes as unknown as string),
+            attributes: parsedAttributes,
             categoryId,
             image: imageName ?? (oldImageName as string),
-            priceConfiguration: JSON.parse(priceConfiguration as unknown as string),
+            priceConfiguration: parsedPriceConfiguration,
             tenantId,
             isPublished
         } as IProduct;
@@ -108,6 +114,10 @@ export class ProductController {
         const { q, tenantId, categoryId, isPublished } = req.query;
 
         const filters: IFilters = {};
+        const paginateQueries = {
+            page: req.query.page ? parseInt(req.query.page as string) : 1,
+            limit: req.query.limit ? parseInt(req.query.limit as string) : 10
+        };
 
         if (isPublished == "true") filters.isPublished = true;
 
@@ -119,7 +129,7 @@ export class ProductController {
             filters.categoryId = new mongoose.Types.ObjectId(categoryId as string);
         }
 
-        const products = await this.productService.getProducts(q as string, filters);
+        const products = await this.productService.getProducts(q as string, filters, paginateQueries);
 
         httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, products);
     }

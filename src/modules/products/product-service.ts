@@ -1,22 +1,27 @@
 import { CreateHttpError } from "../../common/http";
-import logger from "../../config/logger";
+import paginationLables from "../../config/pagination";
 import ProductModel from "./product-model";
-import { IFilters, IProduct } from "./types";
+import { IFilters, IPaginateQueries, IProduct } from "./types";
 
 export class ProductService {
     public async create(productData: IProduct) {
         try {
-            logger.info("PRODUCT_CREATION_SERVICE", { meta: productData });
-            return await ProductModel.create(productData);
+            return (await ProductModel.create(productData)) as IProduct;
         } catch (error) {
-            logger.error("PRODUCT_CREATION_ERROR", { meta: error });
-
-            throw error;
+            if (error instanceof Error) {
+                const err = CreateHttpError.InternalServerError(error.message);
+                throw err;
+            }
+            return;
         }
     }
 
     public async update(id: string, product: IProduct) {
-        const updatedProduct = await ProductModel.findOneAndUpdate({ _id: id }, { $set: product }, { new: true });
+        const updatedProduct = (await ProductModel.findOneAndUpdate(
+            { _id: id },
+            { $set: product },
+            { new: true }
+        ).lean()) as IProduct | null;
         if (!updatedProduct) {
             throw CreateHttpError.NotFoundError("Product not found");
         }
@@ -24,9 +29,7 @@ export class ProductService {
     }
 
     public async getProductImage(id: string | undefined) {
-        logger.info("PRODUCT_SERVICE_GET_IMAGE", { meta: id });
-        const product = await ProductModel.findById(id);
-        logger.info("PRODUCT_SERVICE_GET_IMAGE", { meta: product });
+        const product = (await ProductModel.findById(id).lean()) as IProduct | null;
         if (!product) {
             const err = CreateHttpError.NotFoundError("Product not found");
             throw err;
@@ -34,7 +37,7 @@ export class ProductService {
         return product.image;
     }
 
-    public async getProducts(q: string, filters: IFilters) {
+    public async getProducts(q: string, filters: IFilters, paginateQueries: IPaginateQueries) {
         const searchQueryRegExp = new RegExp(q, "i");
 
         const matchQuery = {
@@ -69,7 +72,12 @@ export class ProductService {
             }
         ]);
 
-        const products = await aggregate.exec();
-        return products as IProduct[];
+        return ProductModel.aggregatePaginate(aggregate, {
+            ...paginateQueries,
+            customLabels: paginationLables
+        });
+
+        // const products = await aggregate.exec();
+        // return products as IProduct[];
     }
 }

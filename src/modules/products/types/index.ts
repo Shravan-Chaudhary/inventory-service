@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import { EPricetype } from "../../../constants";
 
+export interface IAttributes {
+    name: string;
+    value: unknown;
+}
+
 export interface IPriceConfiguration {
     [key: string]: {
         priceType: EPricetype.BASE | EPricetype.ADDITIONAL;
@@ -9,6 +14,17 @@ export interface IPriceConfiguration {
 }
 
 export interface IProduct {
+    _id?: mongoose.Types.ObjectId;
+    name: string;
+    description: string;
+    image: string;
+    priceConfiguration: IPriceConfiguration;
+    attributes: IAttributes;
+    tenantId: string;
+    categoryId: string;
+    isPublished?: boolean;
+}
+export interface IProductRequest {
     _id?: mongoose.Types.ObjectId;
     name: string;
     description: string;
