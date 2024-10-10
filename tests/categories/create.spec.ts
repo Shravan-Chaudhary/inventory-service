@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import initDb from "../../src/config/db";
 import CategoryModel from "../../src/modules/categories/category-model";
 import createJWKSMock, { JWKSMock } from "mock-jwks";
-import { Roles } from "../../src/constants";
+import { ERoles } from "../../src/constants";
 
 describe("POST /categories", () => {
     let connection: mongoose.Connection;
@@ -69,7 +69,7 @@ describe("POST /categories", () => {
 
             const adminToken = jwks.token({
                 sub: "1",
-                role: Roles.ADMIN
+                role: ERoles.ADMIN
             });
 
             // Act
@@ -112,7 +112,7 @@ describe("POST /categories", () => {
             };
             const adminToken = jwks.token({
                 sub: "1",
-                role: Roles.ADMIN
+                role: ERoles.ADMIN
             });
 
             // Act
