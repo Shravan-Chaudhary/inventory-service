@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { EPricetype } from "./types";
+import { EPricetype } from "../../constants";
 
 export default [
     body("name")
