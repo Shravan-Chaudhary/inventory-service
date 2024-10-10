@@ -9,6 +9,7 @@ export interface IPriceConfiguration {
 }
 
 export interface IProduct {
+    _id?: mongoose.Types.ObjectId;
     name: string;
     description: string;
     image: string;
@@ -23,4 +24,9 @@ export interface IFilters {
     tenantId?: string;
     categoryId?: mongoose.Types.ObjectId;
     isPublished?: boolean;
+}
+
+export interface IPaginateQueries {
+    page: number;
+    limit: number;
 }
