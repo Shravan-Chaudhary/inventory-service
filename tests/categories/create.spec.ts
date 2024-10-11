@@ -5,11 +5,12 @@ import initDb from "../../src/config/db";
 import CategoryModel from "../../src/modules/categories/category-model";
 import createJWKSMock, { JWKSMock } from "mock-jwks";
 import { ERoles } from "../../src/constants";
+import Config from "../../src/config";
 
 describe("POST /categories", () => {
     let connection: mongoose.Connection;
     let jwks: JWKSMock;
-    const API_URL = "/api/v1/categories";
+    const API_URL = `${Config.BASE_URL}/categories`;
 
     beforeAll(async () => {
         jwks = createJWKSMock("http://localhost:5501");
