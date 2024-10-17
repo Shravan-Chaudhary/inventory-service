@@ -9,7 +9,9 @@ export interface IAttributes {
 export interface IPriceConfiguration {
     [key: string]: {
         priceType: EPricetype.BASE | EPricetype.ADDITIONAL;
-        availableOptions: string[];
+        availableOptions: {
+            [key: string]: number;
+        };
     };
 }
 
@@ -19,7 +21,7 @@ export interface IProduct {
     description: string;
     image: string;
     priceConfiguration: IPriceConfiguration;
-    attributes: IAttributes;
+    attributes: IAttributes[];
     tenantId: string;
     categoryId: string;
     isPublished?: boolean;

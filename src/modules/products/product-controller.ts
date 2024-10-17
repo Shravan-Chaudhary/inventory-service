@@ -2,8 +2,8 @@ import { Logger } from "winston";
 import { v4 as uuidv4 } from "uuid";
 import { ProductService } from "./product-service";
 import { Request, Response } from "express";
-import { validationResult } from "express-validator";
-import { CreateHttpError, httpResponse, HttpStatus } from "../../common/http";
+// import { validationResult } from "express-validator";
+import { httpResponse, HttpStatus } from "../../common/http";
 import { IAttributes, IFilters, IPriceConfiguration, IProduct, IProductRequest } from "./types";
 import ResponseMessage from "../../common/constants/responseMessage";
 import { IStorageService } from "../../types/storage";
@@ -24,11 +24,11 @@ export class ProductController {
         });
 
         // validation
-        const result = validationResult(req);
-        if (!result.isEmpty()) {
-            const err = CreateHttpError.BadRequestError(result.array()[0].msg as string);
-            throw err;
-        }
+        // const result = validationResult(req);
+        // if (!result.isEmpty()) {
+        //     const err = CreateHttpError.BadRequestError(result.array()[0].msg as string);
+        //     throw err;
+        // }
         // Image upload
         const image = req.files!.image as UploadedFile;
         const imageName = uuidv4();
@@ -39,8 +39,26 @@ export class ProductController {
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
             req.body as IProductRequest;
 
-        const parsedAttributes = JSON.parse(attributes) as IAttributes;
-        const parsedPriceConfiguration = JSON.parse(priceConfiguration) as IPriceConfiguration;
+        let parsedAttributes: IAttributes[];
+        let parsedPriceConfiguration: IPriceConfiguration;
+
+        try {
+            parsedAttributes = JSON.parse(attributes) as IAttributes[];
+        } catch (error) {
+            this.logger.error("Invalid attributes format", {
+                error: error
+            });
+            throw new Error("Invalid attributes format");
+        }
+
+        try {
+            parsedPriceConfiguration = JSON.parse(priceConfiguration) as IPriceConfiguration;
+        } catch (error) {
+            this.logger.error("Invalid attributes format", {
+                error: error
+            });
+            throw new Error("Invalid price configuration format");
+        }
 
         const productData = {
             name,
@@ -52,7 +70,7 @@ export class ProductController {
             tenantId,
             isPublished
         } as IProduct;
-
+        this.logger.info("Parsed data:", productData);
         const product = await this.productService.create(productData);
 
         httpResponse(req, res, HttpStatus.CREATED, ResponseMessage.CREATED, { id: product?._id });
@@ -88,7 +106,7 @@ export class ProductController {
         const { name, description, attributes, categoryId, priceConfiguration, tenantId, isPublished } =
             req.body as IProductRequest;
 
-        const parsedAttributes = JSON.parse(attributes) as IAttributes;
+        const parsedAttributes = JSON.parse(attributes) as IAttributes[];
         const parsedPriceConfiguration = JSON.parse(priceConfiguration) as IPriceConfiguration;
 
         const productData = {
