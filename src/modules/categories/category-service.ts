@@ -12,4 +12,14 @@ export class CategoryService {
             return;
         }
     }
+
+    async findAll() {
+        try {
+            const categories = await CategoryModel.find();
+            return categories as ICategory[];
+        } catch (error) {
+            if (error instanceof Error) throw error;
+            return;
+        }
+    }
 }

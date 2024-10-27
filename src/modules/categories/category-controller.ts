@@ -8,11 +8,11 @@ import { Logger } from "winston";
 
 export class CategoryController {
     constructor(
-        private categoryService: CategoryService,
-        private logger: Logger
+        private readonly categoryService: CategoryService,
+        private readonly logger: Logger
     ) {}
 
-    async create(req: Request, res: Response, _next: NextFunction) {
+    public async create(req: Request, res: Response, _next: NextFunction) {
         this.logger.info("CONTROLLER_REQUEST", {
             meta: req.body as ICategory
         });
@@ -35,5 +35,15 @@ export class CategoryController {
             id: category?._id,
             name: category?.name
         });
+    }
+
+    public async findAll(req: Request, res: Response, _next: NextFunction) {
+        this.logger.info("CONTROLLER_REQUEST", {
+            meta: req.body as unknown
+        });
+
+        const categories = await this.categoryService.findAll();
+
+        httpResponse(req, res, HttpStatus.OK, ResponseMessage.SUCCESS, categories);
     }
 }
