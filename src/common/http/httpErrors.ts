@@ -4,52 +4,31 @@ import ResponseMessage from "../constants/responseMessage";
 
 const CreateHttpError = {
     BadRequestError(message?: string) {
-        return createHttpError(
-            HttpStatus.BAD_REQUEST,
-            message ?? ResponseMessage.BAD_REQUEST
-        );
+        return createHttpError(HttpStatus.BAD_REQUEST, message ?? ResponseMessage.BAD_REQUEST);
     },
 
     ConflictError(message?: string) {
-        return createHttpError(
-            HttpStatus.CONFLICT,
-            message ?? ResponseMessage.CONFLICT
-        );
+        return createHttpError(HttpStatus.CONFLICT, message ?? ResponseMessage.CONFLICT);
     },
 
     UnauthorizedError(message?: string) {
-        return createHttpError(
-            HttpStatus.UNAUTHORIZED,
-            message ?? ResponseMessage.UNAUTHORIZED
-        );
+        return createHttpError(HttpStatus.UNAUTHORIZED, message ?? ResponseMessage.UNAUTHORIZED);
     },
 
     ForbiddenError(message?: string) {
-        return createHttpError(
-            HttpStatus.FORBIDDEN,
-            message ?? ResponseMessage.FORBIDDEN
-        );
+        return createHttpError(HttpStatus.FORBIDDEN, message ?? ResponseMessage.FORBIDDEN);
     },
 
     NotFoundError(message?: string) {
-        return createHttpError(
-            HttpStatus.NOT_FOUND,
-            message ?? ResponseMessage.NOT_FOUND
-        );
+        return createHttpError(HttpStatus.NOT_FOUND, message ?? ResponseMessage.NOT_FOUND);
     },
 
     InternalServerError(message?: string) {
-        return createHttpError(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            message ?? ResponseMessage.INTERNAL_ERROR
-        );
+        return createHttpError(HttpStatus.INTERNAL_SERVER_ERROR, message ?? ResponseMessage.INTERNAL_ERROR);
     },
 
     DatabaseError(message?: string) {
-        return createHttpError(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            message ?? "database error occured"
-        );
+        return createHttpError(HttpStatus.INTERNAL_SERVER_ERROR, message ?? "database error occured");
     }
 };
 
