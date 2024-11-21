@@ -16,6 +16,15 @@ const productService = new ProductService();
 const s3StorageService = new S3StorageService();
 const productController = new ProductController(productService, s3StorageService, logger);
 
+// public routes
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        await productController.index(req, res);
+    })
+);
+
+// private routes
 router.post(
     "/",
     authenticate,
@@ -51,13 +60,6 @@ router.put(
     }),
     asyncHandler(async (req, res) => {
         await productController.update(req, res);
-    })
-);
-
-router.get(
-    "/",
-    asyncHandler(async (req, res) => {
-        await productController.index(req, res);
     })
 );
 

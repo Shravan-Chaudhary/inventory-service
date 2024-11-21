@@ -14,6 +14,15 @@ const categoryController = new CategoryController(categoryService, logger);
 
 //TODO: Implement crud operations for categories
 
+// public routes
+router.get(
+    "/",
+    asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+        await categoryController.findAll(req, res, next);
+    })
+);
+
+// private routes
 router.post(
     "/",
     authenticate,
