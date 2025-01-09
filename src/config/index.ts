@@ -12,7 +12,9 @@ const Config = {
     S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     S3_ACCESS_KEY: process.env.S3_ACCESS_KEY,
     S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
-    S3_REGION: process.env.S3_REGION
+    S3_REGION: process.env.S3_REGION,
+    CORS_CLIENT_URL: process.env.CORS_CLIENT_URL,
+    CORS_ADMIN_URL: process.env.CORS_ADMIN_URL
 };
 
 export default Config;
