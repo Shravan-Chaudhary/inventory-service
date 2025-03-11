@@ -9,12 +9,14 @@ import { CreateHttpError } from "../../common/http";
 import authenticate from "../../common/middlewares/authenticate";
 import canAccess from "../../common/middlewares/canAccess";
 import { ERoles } from "../../constants";
+import { createMessageProducerBroker } from "../../common/factories/brokerFactory";
 
 const router = express.Router();
+const messageProducerBroker = createMessageProducerBroker();
 
 const productService = new ProductService();
 const s3StorageService = new S3StorageService();
-const productController = new ProductController(productService, s3StorageService, logger);
+const productController = new ProductController(productService, s3StorageService, logger, messageProducerBroker);
 
 // public routes
 router.get(

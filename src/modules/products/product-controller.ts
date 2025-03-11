@@ -9,13 +9,15 @@ import ResponseMessage from "../../common/constants/responseMessage";
 import { IStorageService } from "../../types/storage";
 import { UploadedFile } from "express-fileupload";
 import mongoose from "mongoose";
+import { MessageProducerBroker } from "../../types/broker";
 
 //TODO: Check product access by tenant
 export class ProductController {
     constructor(
         private readonly productService: ProductService,
         private readonly storageService: IStorageService,
-        private readonly logger: Logger
+        private readonly logger: Logger,
+        private readonly broker: MessageProducerBroker
     ) {}
 
     async create(req: Request, res: Response) {
@@ -72,6 +74,12 @@ export class ProductController {
         } as IProduct;
         this.logger.info("Parsed data:", productData);
         const product = await this.productService.create(productData);
+
+        // Send message to Kafka
+        await this.broker.sendMessage(
+            "product",
+            JSON.stringify({ _id: product?._id, priceConfiguration: product?.priceConfiguration })
+        );
 
         httpResponse(req, res, HttpStatus.CREATED, ResponseMessage.CREATED, { id: product?._id });
     }

@@ -1,10 +1,14 @@
 import app from "./app";
+import { createMessageProducerBroker } from "./common/factories/brokerFactory";
 import Config from "./config";
 import initDb from "./config/db";
 import logger from "./config/logger";
+import { MessageProducerBroker } from "./types/broker";
 
 const startServer = async () => {
     const PORT = Config.PORT ?? 5502;
+
+    let messageProducerBroker: MessageProducerBroker | null = null;
 
     try {
         // Initialize database
@@ -14,6 +18,13 @@ const startServer = async () => {
                 CONNECTION_NAME: connection.name
             }
         });
+
+        // Connect to Kafka
+        if (!Config.KAFKA_CLIENT_ID) {
+            throw new Error("KAFKA_CLIENT_ID is not defined");
+        }
+        messageProducerBroker = createMessageProducerBroker();
+        await messageProducerBroker.connect();
 
         // Start Application
         app.listen(PORT, () => {
@@ -26,6 +37,9 @@ const startServer = async () => {
         });
     } catch (error) {
         if (error instanceof Error) {
+            if (messageProducerBroker) {
+                await messageProducerBroker.disconnect();
+            }
             logger.error("APPLICATION_ERROR", {
                 meta: error
             });
