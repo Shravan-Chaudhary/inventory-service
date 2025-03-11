@@ -14,7 +14,8 @@ const Config = {
     S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
     S3_REGION: process.env.S3_REGION,
     CORS_CLIENT_URL: process.env.CORS_CLIENT_URL,
-    CORS_ADMIN_URL: process.env.CORS_ADMIN_URL
+    CORS_ADMIN_URL: process.env.CORS_ADMIN_URL,
+    KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID
 };
 
 export default Config;
