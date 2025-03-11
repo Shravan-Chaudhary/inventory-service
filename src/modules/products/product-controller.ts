@@ -75,11 +75,13 @@ export class ProductController {
         this.logger.info("Parsed data:", productData);
         const product = await this.productService.create(productData);
 
-        // Send message to Kafka
-        await this.broker.sendMessage(
-            "product",
-            JSON.stringify({ _id: product?._id, priceConfiguration: product?.priceConfiguration })
-        );
+        if (product) {
+            // Send message to Kafka
+            await this.broker.sendMessage(
+                "product",
+                JSON.stringify({ _id: product?._id, priceConfiguration: product?.priceConfiguration })
+            );
+        }
 
         httpResponse(req, res, HttpStatus.CREATED, ResponseMessage.CREATED, { id: product?._id });
     }
@@ -129,6 +131,15 @@ export class ProductController {
         } as IProduct;
 
         const updatedProduct = await this.productService.update(productId, productData);
+
+        if (updatedProduct) {
+            // Send message to Kafka
+            await this.broker.sendMessage(
+                "product",
+                JSON.stringify({ _id: updatedProduct?._id, priceConfiguration: updatedProduct?.priceConfiguration })
+            );
+        }
+
         httpResponse(req, res, HttpStatus.OK, ResponseMessage.UPDATED, { id: updatedProduct?._id });
     }
 
