@@ -1,15 +1,16 @@
-import { Logger } from "winston";
-import { v4 as uuidv4 } from "uuid";
-import { ProductService } from "./product-service";
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
+import { Logger } from "winston";
+import { ProductService } from "./product-service";
 // import { validationResult } from "express-validator";
-import { httpResponse, HttpStatus } from "../../common/http";
-import { IAttributes, IFilters, IPriceConfiguration, IProduct, IProductRequest } from "./types";
-import ResponseMessage from "../../common/constants/responseMessage";
-import { IStorageService } from "../../types/storage";
 import { UploadedFile } from "express-fileupload";
 import mongoose from "mongoose";
+import ResponseMessage from "../../common/constants/responseMessage";
+import { httpResponse, HttpStatus } from "../../common/http";
 import { MessageProducerBroker } from "../../types/broker";
+import { IStorageService } from "../../types/storage";
+import { mapToObject } from "../../utils";
+import { IAttributes, IFilters, IPriceConfiguration, IProduct, IProductRequest } from "./types";
 
 //TODO: Check product access by tenant
 export class ProductController {
@@ -79,7 +80,10 @@ export class ProductController {
             // Send message to Kafka
             await this.broker.sendMessage(
                 "product",
-                JSON.stringify({ _id: product?._id, priceConfiguration: product?.priceConfiguration })
+                JSON.stringify({
+                    _id: product?._id,
+                    priceConfiguration: mapToObject(product.priceConfiguration as unknown as Map<string, any>)
+                })
             );
         }
 
@@ -136,7 +140,10 @@ export class ProductController {
             // Send message to Kafka
             await this.broker.sendMessage(
                 "product",
-                JSON.stringify({ _id: updatedProduct?._id, priceConfiguration: updatedProduct?.priceConfiguration })
+                JSON.stringify({
+                    _id: updatedProduct._id,
+                    priceConfiguration: updatedProduct.priceConfiguration
+                })
             );
         }
 

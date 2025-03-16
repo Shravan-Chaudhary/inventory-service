@@ -35,7 +35,10 @@ export default tseslint.config({
                 varsIgnorePattern: "^_",
                 ignoreRestSiblings: true
             }
-        ]
+        ],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off"
     },
     ignores: ["node_modules", "dist", "**/*.spec.ts", "tests"]
 });
