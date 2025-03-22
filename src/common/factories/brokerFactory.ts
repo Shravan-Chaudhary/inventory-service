@@ -11,7 +11,8 @@ export const createMessageProducerBroker = (): MessageProducerBroker => {
     // make it singleton
     // TODO: change brokers to use env vars
     if (!messageProducer) {
-        messageProducer = new KafkaProducerBroker(Config.KAFKA_CLIENT_ID, ["localhost:9092"]);
+        const kafkaBrokers = JSON.parse(Config.KAFKA_BROKERS as string) as string[];
+        messageProducer = new KafkaProducerBroker(Config.KAFKA_CLIENT_ID, kafkaBrokers);
     }
     return messageProducer;
 };

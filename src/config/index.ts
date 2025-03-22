@@ -15,7 +15,10 @@ const Config = {
     S3_REGION: process.env.S3_REGION,
     CORS_CLIENT_URL: process.env.CORS_CLIENT_URL,
     CORS_ADMIN_URL: process.env.CORS_ADMIN_URL,
-    KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID
+    KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID,
+    KAFKA_BROKERS: process.env.KAFKA_BROKERS,
+    SASL_USERNAME: process.env.SASL_USERNAME,
+    SASL_PASSWORD: process.env.SASL_PASSWORD
 };
 
 export default Config;
