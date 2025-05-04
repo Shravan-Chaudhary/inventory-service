@@ -11,6 +11,7 @@ import { MessageProducerBroker } from "../../types/broker";
 import { IStorageService } from "../../types/storage";
 import { mapToObject } from "../../utils";
 import { IAttributes, IFilters, IPriceConfiguration, IProduct, IProductRequest } from "./types";
+import { EProductEvents } from "../../constants";
 
 //TODO: Check product access by tenant
 export class ProductController {
@@ -81,8 +82,11 @@ export class ProductController {
             await this.broker.sendMessage(
                 "product",
                 JSON.stringify({
-                    _id: product?._id,
-                    priceConfiguration: mapToObject(product.priceConfiguration as unknown as Map<string, any>)
+                    event_type: EProductEvents.PRODUCT_CREATE,
+                    data: {
+                        _id: product._id,
+                        priceConfiguration: mapToObject(product.priceConfiguration as unknown as Map<string, any>)
+                    }
                 })
             );
         }
@@ -141,8 +145,12 @@ export class ProductController {
             await this.broker.sendMessage(
                 "product",
                 JSON.stringify({
-                    _id: updatedProduct._id,
-                    priceConfiguration: updatedProduct.priceConfiguration
+                    event_type: EProductEvents.PRODUCT_CREATE,
+                    data: {
+                        _id: updatedProduct._id,
+
+                        priceConfiguration: updatedProduct.priceConfiguration
+                    }
                 })
             );
         }
