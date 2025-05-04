@@ -78,6 +78,11 @@ export class ProductController {
         const product = await this.productService.create(productData);
 
         if (product) {
+            // Make sure priceConfiguration is properly converted
+            const priceConfigObj =
+                product.priceConfiguration instanceof Map
+                    ? mapToObject(product.priceConfiguration as Map<string, any>)
+                    : product.priceConfiguration;
             // Send message to Kafka
             await this.broker.sendMessage(
                 "product",
@@ -85,7 +90,7 @@ export class ProductController {
                     event_type: EProductEvents.PRODUCT_CREATE,
                     data: {
                         _id: product._id,
-                        priceConfiguration: mapToObject(product.priceConfiguration as unknown as Map<string, any>)
+                        priceConfiguration: priceConfigObj
                     }
                 })
             );
