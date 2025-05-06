@@ -10,6 +10,7 @@ import categoryRouter from "./modules/categories/category-router";
 import Config from "./config";
 import cookieParser from "cookie-parser";
 import productRouter from "./modules/products/product-router";
+import toppingRouter from "./modules/toppings/topping-router";
 
 const app: Application = express();
 const ALLOWED_DOMAINS = [Config.CORS_CLIENT_URL as string, Config.CORS_ADMIN_URL as string];
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Routes
 app.use(`${Config.BASE_URL}/categories`, categoryRouter);
 app.use(`${Config.BASE_URL}/products`, productRouter);
+app.use(`${Config.BASE_URL}/toppings`, toppingRouter);
 
 // Health check
 app.get(`${Config.BASE_URL}/health`, (req: Request, res: Response) => {
